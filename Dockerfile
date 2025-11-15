@@ -1,11 +1,12 @@
-# Imagen oficial de n8n
-FROM n8nio/n8n:latest
-# Si quieres fijar versión concreta:
-# FROM n8nio/n8n:1.97.1
+FROM n8nio/n8n:1.119.2
 
-# Instalar ffmpeg (la imagen base es Alpine)
+# Cambiar a root para instalar paquetes
 USER root
-RUN apk add --no-cache ffmpeg
 
-# Volver al usuario por defecto
+# Instalar ffmpeg completo
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Volver al usuario por defecto de n8n
 USER node
