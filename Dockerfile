@@ -1,16 +1,13 @@
 FROM n8nio/n8n:1.119.2
 
-# Pasamos a root para poder instalar paquetes y crear carpetas
+# Cambiar a root para instalar paquetes
 USER root
 
-# Instalar ffmpeg y limpiar caché de apt
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar FFmpeg
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Crear la carpeta /data y darle permisos al usuario "node"
-RUN mkdir -p /data \
-    && chown -R node:node /data
-
-# Volver al usuario por defecto de n8n
+# Regresar al usuario normal
 USER node
